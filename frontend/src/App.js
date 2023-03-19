@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import StoryChoices from './components/StoryChoices';
-import { fetchFirstPart } from './api';
+import { fetchFirstPart, fetchNextPart } from './api';
 
 const App = () => {
   const [storyPart, setStoryPart] = useState(null);
-  const choices = ["Go to the forest", "Visit the blacksmith"];
 
   useEffect(() => {
     const loadFirstPart = async () => {
@@ -15,8 +14,9 @@ const App = () => {
     loadFirstPart();
   }, []);
 
-  const handleChoiceSelected = (choice) => {
-    console.log("Selected choice:", choice);
+  const handleChoiceSelected = async (choice) => {
+    const nextPart = await fetchNextPart(choice);
+    setStoryPart(nextPart);
   };
 
   return (
@@ -25,9 +25,9 @@ const App = () => {
         <>
           <h1>{storyPart.title}</h1>
           <p>{storyPart.content}</p>
+          <StoryChoices choices={storyPart.choices} onChoiceSelected={handleChoiceSelected} />
         </>
       )}
-      <StoryChoices choices={choices} onChoiceSelected={handleChoiceSelected} />
     </div>
   );
 };

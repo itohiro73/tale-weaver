@@ -1,20 +1,18 @@
 import axios from 'axios';
 
-const apiClient = axios.create({
-  baseURL: 'http://localhost:3000',
+const api = axios.create({
+  baseURL: 'http://localhost:3000/api',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 export const fetchFirstPart = async () => {
-  try {
-    const response = await apiClient.get('/api/story/first-part');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching the first part of the story:', error);
-    return null;
-  }
+  const response = await api.get('/story/first');
+  return response.data;
 };
 
-export default apiClient;
+export const fetchNextPart = async (choice) => {
+  const response = await api.post('/story/next', { choice });
+  return response.data;
+};
