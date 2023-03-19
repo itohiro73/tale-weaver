@@ -2,7 +2,6 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
-@router.get("/stories/")
-async def get_stories():
-    return [{"id": 1, "title": "Sample Story"}]
-
+@router.get("/api/story/first-part")
+async def get_first_part():
+    return {"message": "Hello, World!"}

@@ -1,17 +1,17 @@
-mock_story_parts = [
-    {
-        "id": 1,
+mock_story_parts = {
+    "start": {
         "title": "The Beginning",
-        "content": "Once upon a time, in a small village, there lived a young hero...",
+        "content": "Once upon a time...",
+        "choices": ["Go to the forest", "Visit the blacksmith"]
     },
-    {
-        "id": 2,
-        "title": "The Quest",
-        "content": "One day, the hero received a letter from the king, asking for help...",
+    "Go to the forest": {
+        "title": "The Forest",
+        "content": "You find yourself in a lush forest...",
+        "choices": ["Climb a tree", "Follow the path"]
     },
-    {
-        "id": 3,
-        "title": "The Climax",
-        "content": "After a long and perilous journey, the hero finally faced the dragon...",
-    },
-]
+    "Visit the blacksmith": {
+        "title": "The Blacksmith",
+        "content": "You enter the blacksmith's workshop...",
+        "choices": ["Ask for a sword", "Leave the workshop"]
+    }
+}
