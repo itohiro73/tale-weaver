@@ -1,0 +1,11 @@
+.story-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.story-choices button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
