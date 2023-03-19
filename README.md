@@ -96,3 +96,62 @@ sequenceDiagram
 ```
 
 
+# TaleWeaver 開発環境セットアップガイド
+
+## Dockerの初期立ち上げ方法
+
+プロジェクトディレクトリで以下のコマンドを実行して、Dockerコンテナを立ち上げます。
+
+```
+# docker-compose up -d
+```
+
+
+## Docker起動後にデータベースへの接続方法・サンプルクエリ
+
+データベースへの接続は、以下のコマンドを実行してください。
+
+```
+docker-compose exec db psql -U ${POSTGRES_USER} -d taleweaver
+```
+
+
+サンプルクエリとして、`stories`テーブルから全てのデータを取得するクエリを実行します。
+
+```sql
+SELECT * FROM stories;
+```
+
+## 開発中にデータベースを再構築したくなった場合の手順
+データベースを再構築するには、以下の手順を実行します。
+
+1. Dockerコンテナを停止します。
+
+```
+# docker-compose down
+```
+
+2. ボリュームデータを削除します。
+
+```
+# docker volume rm taleweaver_pgdata
+```
+
+3. Dockerコンテナを再起動します。
+
+```
+# docker-compose up -d
+```
+これにより、データベースが初期状態に戻ります。
+
+## Dockerをシャットダウンする方法
+Dockerコンテナをシャットダウンするには、以下のコマンドを実行します。
+
+```
+# docker-compose down
+```
+
+## その他有用な情報
+- アプリケーションはポート3000で実行されます。ブラウザで http://localhost:3000 にアクセスしてアプリケーションを表示できます。
+- PostgreSQLデータベースはポート5432で実行されます。データベースに接続する際には、このポート番号を使用してください。
+
