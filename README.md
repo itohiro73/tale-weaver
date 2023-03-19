@@ -112,7 +112,7 @@ sequenceDiagram
 データベースへの接続は、以下のコマンドを実行してください。
 
 ```
-docker-compose exec db psql -U ${POSTGRES_USER} -d taleweaver
+# docker-compose exec db psql -U ${POSTGRES_USER} -d taleweaver
 ```
 
 
@@ -154,4 +154,25 @@ Dockerコンテナをシャットダウンするには、以下のコマンド�
 ## その他有用な情報
 - アプリケーションはポート3000で実行されます。ブラウザで http://localhost:3000 にアクセスしてアプリケーションを表示できます。
 - PostgreSQLデータベースはポート5432で実行されます。データベースに接続する際には、このポート番号を使用してください。
+
+### Dockerのログを確認する方法
+
+Dockerのログを確認するには、`docker-compose logs`コマンドを使用します。特定のサービスのログだけを表示するには、`-f`オプションを使用してサービス名を指定します。
+
+#### appサービスのログを確認する方法
+
+appサービスのログを確認するには、以下のコマンドを実行します。
+
+```
+# docker-compose logs -f app
+```
+
+
+#### dbサービスのログを確認する方法
+
+dbサービスのログを確認するには、以下のコマンドを実行します。
+
+```
+# docker-compose logs -f db
+```
 
