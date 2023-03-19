@@ -13,16 +13,16 @@ services:
       - DB_HOST=db
       - DB_PORT=5432
       - DB_NAME=taleweaver
-      - DB_USER=your_username
-      - DB_PASSWORD=your_password
+      - DB_USER=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
 
   db:
     image: postgres:13
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=your_username
-      - POSTGRES_PASSWORD=your_password
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=taleweaver
     volumes:
       - pgdata:/var/lib/postgresql/data
