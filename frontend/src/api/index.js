@@ -12,7 +12,12 @@ export const fetchFirstPart = async () => {
   return response.data;
 };
 
-export const fetchNextPart = async (choice) => {
-  const response = await api.post('/story/next', { choice });
-  return response.data;
+export const fetchNextPart = async ({ choice, prev_title, prev_content }) => {
+  try {
+    const response = await api.post("/story/next", { choice, prev_title, prev_content });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching next part:", error);
+    return null;
+  }
 };

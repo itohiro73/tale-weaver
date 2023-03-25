@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchFirstPart } from "../api";
 
-const StoryPart = () => {
+const StoryPart = ({ onStoryLoaded }) => {
   const [storyPart, setStoryPart] = useState({});
 
   useEffect(() => {
@@ -9,19 +9,20 @@ const StoryPart = () => {
       try {
         const result = await fetchFirstPart();
         setStoryPart(result);
+        onStoryLoaded(result);
       } catch (error) {
         console.error("Failed to fetch the story part:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [onStoryLoaded]);
 
   return (
-    <div>
-      <h2>{storyPart.title}</h2>
-      <p>{storyPart.content}</p>
-    </div>
+      <div className="story-part">
+        <h1>{storyPart.title}</h1>
+        <p>{storyPart.content}</p>
+      </div>
   );
 };
 

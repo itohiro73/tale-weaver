@@ -1,35 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import StoryChoices from './components/StoryChoices';
-import { fetchFirstPart, fetchNextPart } from './api';
+import StoryPart from './components/StoryPart';
+import { fetchNextPart } from './api';
 
 const App = () => {
-  const [storyPart, setStoryPart] = useState(null);
+    const [storyPart, setStoryPart] = useState(null);
 
-  useEffect(() => {
-    const loadFirstPart = async () => {
-      const firstPart = await fetchFirstPart();
-      setStoryPart(firstPart);
+    const handleChoiceSelected = async (selectedChoice) => {
+        const nextPart = await fetchNextPart({ choice: selectedChoice, prev_title: storyPart.title, prev_content: storyPart.content });
+        setStoryPart(nextPart);
     };
-    loadFirstPart();
-  }, []);
 
-  const handleChoiceSelected = async (choice) => {
-    const nextPart = await fetchNextPart(choice);
-    setStoryPart(nextPart);
-  };
-
-  return (
-    <div className="App">
-      {storyPart && (
-        <>
-          <h1>{storyPart.title}</h1>
-          <p>{storyPart.content}</p>
-          <StoryChoices choices={storyPart.choices} onChoiceSelected={handleChoiceSelected} />
-        </>
-      )}
-    </div>
-  );
+    return (
+        <div className="App">
+            <StoryPart onStoryLoaded={setStoryPart} />
+            {storyPart && (
+                <>
+                    <StoryChoices choices={storyPart.choices} onChoiceSelected={handleChoiceSelected} />
+                </>
+            )}
+        </div>
+    );
 };
 
 export default App;
