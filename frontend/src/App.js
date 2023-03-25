@@ -9,12 +9,13 @@ const App = () => {
 
     const handleChoiceSelected = async (selectedChoice) => {
         const nextPart = await fetchNextPart({ choice: selectedChoice, prev_title: storyPart.title, prev_content: storyPart.content });
+        console.log('Next part:', nextPart);
         setStoryPart(nextPart);
     };
 
     return (
         <div className="App">
-            <StoryPart onStoryLoaded={setStoryPart} />
+            <StoryPart storyPart={storyPart} onStoryLoaded={setStoryPart} />
             {storyPart && (
                 <>
                     <StoryChoices choices={storyPart.choices} onChoiceSelected={handleChoiceSelected} />
