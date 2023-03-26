@@ -5,20 +5,28 @@ const StoryPart = ({ storyPart, onStoryLoaded }) => {
   const [localStoryPart, setLocalStoryPart] = useState({});
 
   useEffect(() => {
+    let fetched = false;
+
     const fetchData = async () => {
       try {
         const result = await fetchFirstPart();
-        setLocalStoryPart(result);
-        onStoryLoaded(result);
+        if (!fetched) {
+          setLocalStoryPart(result);
+          onStoryLoaded(result);
+        }
       } catch (error) {
         console.error("Failed to fetch the story part:", error);
       }
     };
 
-    if (!localStoryPart.title) {
+    if (!storyPart) {
       fetchData();
     }
-  }, [localStoryPart, onStoryLoaded]);
+
+    return () => {
+      fetched = true;
+    };
+  }, [storyPart, onStoryLoaded]);
 
   const displayStoryPart = storyPart || localStoryPart;
 

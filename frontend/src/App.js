@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import './App.css';
 import StoryChoices from './components/StoryChoices';
 import StoryPart from './components/StoryPart';
@@ -13,9 +13,13 @@ const App = () => {
         setStoryPart(nextPart);
     };
 
+    const onStoryLoaded = useCallback((story) => {
+        setStoryPart(story);
+    }, []);
+
     return (
         <div className="App">
-            <StoryPart storyPart={storyPart} onStoryLoaded={setStoryPart} />
+            <StoryPart storyPart={storyPart} onStoryLoaded={onStoryLoaded} />
             {storyPart && (
                 <>
                     <StoryChoices choices={storyPart.choices} onChoiceSelected={handleChoiceSelected} />
