@@ -33,3 +33,21 @@ button {
   cursor: pointer;
   border-radius: 5px;
 }
+
+.story-part {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: 1.5rem;
+  max-width: 80%;
+  text-align: justify;
+  margin-bottom: 1.5rem;
+}
