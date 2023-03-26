@@ -6,11 +6,15 @@ import { fetchNextPart } from './api';
 
 const App = () => {
     const [storyPart, setStoryPart] = useState(null);
+    const [choiceCount, setChoiceCount] = useState(0);
 
     const handleChoiceSelected = async (selectedChoice) => {
-        const nextPart = await fetchNextPart({ choice: selectedChoice, prev_title: storyPart.title, prev_content: storyPart.content });
+        const requestData = { choice: selectedChoice, prev_title: storyPart.title, prev_content: storyPart.content, choice_count: choiceCount };
+        console.log('Request data:', requestData);  // 追加
+        const nextPart = await fetchNextPart(requestData);
         console.log('Next part:', nextPart);
         setStoryPart(nextPart);
+        setChoiceCount(choiceCount + 1);
     };
 
     const onStoryLoaded = useCallback((story) => {
