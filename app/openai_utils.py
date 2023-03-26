@@ -16,17 +16,39 @@ def generate_choices(prompt, title="", content=""):
         f"選択肢1: <Choice 1>\n"
         f"選択肢2: <Choice 2>\n"
     )
-    print("Sending prompt:", formatted_prompt)
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=formatted_prompt,
-        max_tokens=1024,
-        n=1,
-        stop=["タイトル:", "内容:", "選択肢1:", "選択肢2:"],
-        temperature=0.7,
-    )
-    print("Received response:", response.choices[0].text.strip())
-    return parse_response(response.choices[0].text.strip())
+
+    max_retries = 5
+    retries = 0
+
+    while retries < max_retries:
+        print("Sending prompt:", formatted_prompt)
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=formatted_prompt,
+            max_tokens=1024,
+            n=1,
+            stop=["タイトル:", "内容:", "選択肢1:", "選択肢2:"],
+            temperature=0.7,
+        )
+        print("Received response:", response.choices[0].text.strip())
+        parsed_response = parse_response(response.choices[0].text.strip())
+
+        if is_valid_response(parsed_response):
+            return parsed_response
+        else:
+            retries += 1
+
+    # すべての再試行が失敗した場合は、エラーを返す
+    raise ValueError("Failed to generate a valid response")
+
+def is_valid_response(response: dict) -> bool:
+    return all([
+        response["title"],
+        response["content"],
+        len(response["choices"]) >= 2,
+        response["choices"][0],
+        response["choices"][1]
+    ])
 
 def parse_response(response_text):
     response_parts = response_text.split("\n")
