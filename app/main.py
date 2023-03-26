@@ -56,11 +56,11 @@ async def get_next_part(choice: Choice):
 
         # 完結条件に応じてプロンプトを変更
         if is_conclusion_reached or is_conclusion_probability_met:
-            prompt = f"前回、あなたは、物語のタイトル: '{choice.prev_title}'\n物語の内容: '{choice.prev_content}'を作成しました。その後に続く物語を、\nユーザーが選択した選択肢: '{choice.choice}'\nこの情報に基づいて続きの物語の段落を作成してください。今回の段落で物語が完結するようにしてください。返答は以下のようなフォーマットで返し、物語のタイトルを <Title> に、内容を <Content> に入れてください。決してコードは書かないでくださいね。"
+            prompt = f"前回、あなたは、物語のタイトル: '{choice.prev_title}'\n物語の内容: '{choice.prev_content}'を作成しました。その後に続く物語を、\nユーザーが選択した選択肢: '{choice.choice}'\nこの情報に基づいて続きの物語の段落を作成してください。今回の段落で物語が完結するようにしてください。返答は以下のようなフォーマットで返し、物語のタイトルを <Title> に、内容を <Content> に入れてください。決してコードは書かないでくださいね。\n\nTitle: <Title>\nContent: <Content>\n"
         else:
             prompt = f"前回、あなたは、物語のタイトル: '{choice.prev_title}'\n物語の内容: '{choice.prev_content}'を作成しました。その後に続く物語を、\nユーザーが選択した選択肢: '{choice.choice}'\nこの情報に基づいて続きの物語の段落を作成してください。さらにその後に続く物語の分岐を20文字以内程度の2つの選択肢として提供してください。返答は以下のようなフォーマットで返し、物語のタイトルを <Title> に、内容を <Content> に、選択肢1を <Choice 1> に、選択肢2を <Choice 2> に入れてください。決してコードは書かないでくださいね。"
 
-        next_part = generate_choices(prompt, choice.choice)
+        next_part = generate_choices(prompt, choice.choice, is_conclusion=is_conclusion_reached or is_conclusion_probability_met)
         logging.debug(f"choice: {choice}")  # リクエストデータをログに出力
         return next_part
     else:

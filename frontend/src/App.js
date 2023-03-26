@@ -24,7 +24,7 @@ const App = () => {
     return (
         <div className="App">
             <StoryPart storyPart={storyPart} onStoryLoaded={onStoryLoaded} />
-            {storyPart && (
+            {storyPart && storyPart.choices && (
                 <>
                     <StoryChoices choices={storyPart.choices} onChoiceSelected={handleChoiceSelected} />
                 </>

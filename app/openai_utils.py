@@ -8,14 +8,17 @@ if openai.api_key:
 else:
     print("OPENAI_API_KEY is not set.")
 
-def generate_choices(prompt, title="", content=""):
-    formatted_prompt = (
-        f"{prompt}\n\n"
-        f"タイトル: <Title>\n"
-        f"内容: <Content>\n\n"
-        f"選択肢1: <Choice 1>\n"
-        f"選択肢2: <Choice 2>\n"
-    )
+def generate_choices(prompt, title="", content="", is_conclusion=False):
+    if is_conclusion:
+        formatted_prompt = f"{prompt}\n\n"
+    else:
+        formatted_prompt = (
+            f"{prompt}\n\n"
+            f"タイトル: <Title>\n"
+            f"内容: <Content>\n\n"
+            f"選択肢1: <Choice 1>\n"
+            f"選択肢2: <Choice 2>\n"
+        )
 
     max_retries = 5
     retries = 0
@@ -42,13 +45,21 @@ def generate_choices(prompt, title="", content=""):
     raise ValueError("Failed to generate a valid response")
 
 def is_valid_response(response: dict) -> bool:
-    return all([
+    print("Validating response: ", response)
+    base_conditions = [
         response["title"],
         response["content"],
-        len(response["choices"]) >= 2,
-        response["choices"][0],
-        response["choices"][1]
-    ])
+   ]
+
+    if "choices" in response and len(response["choices"]) >= 2:
+        choice_conditions = [
+            response["choices"][0],
+            response["choices"][1]
+        ]
+    else:
+        choice_conditions = []
+
+    return all(base_conditions + choice_conditions)
 
 def parse_response(response_text):
     response_parts = response_text.split("\n")
@@ -70,8 +81,11 @@ def parse_response(response_text):
             choice = part[len("選択肢2:"):] if part.startswith("選択肢2:") else part[len("Choice 2:"):]
             choices.append(choice.strip())
 
-    # Ensure at least two choices are extracted
-    while len(choices) < 2:
-        choices.append("")
+    if len(choices) > 0:
+        # Ensure at least two choices are extracted
+        while len(choices) < 2:
+            choices.append("")
 
-    return {"title": title, "content": content, "choices": choices[:2]}
+        return {"title": title, "content": content, "choices": choices[:2]}
+    else:
+        return {"title": title, "content": content}
