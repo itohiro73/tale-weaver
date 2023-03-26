@@ -5,6 +5,7 @@ from .mock_data import mock_story_parts
 from .routes import router as story_router
 from .openai_utils import generate_choices
 import logging
+import random
 
 # ロガーの設定
 logging.basicConfig(level=logging.DEBUG)
@@ -13,7 +14,7 @@ class Choice(BaseModel):
     choice: str
     prev_title: str
     prev_content: str
-    choice_count: int  # 追加
+    choice_count: int
 
 app = FastAPI()
 
